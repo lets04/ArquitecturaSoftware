@@ -1,29 +1,46 @@
-# Ejemplo de la Actividad 10
-## Reserva de una cita médica
+# Reserva de citas médicas
 
-Usa Java 11 y se ejecuta en consola con una cita por ejecución. La agenda se guarda en memoria.
+**Actividad 10**  
+**Estudiante:** Leticia Brenda Loredo Salazar  
 
-## Ejecutar
+## Descripción
 
-Con el JDK 11 o superior, abre una terminal en la carpeta que contiene `src/`:
+Desarrollé un programa en Java que permite reservar una cita médica desde la consola. El usuario escribe su nombre, la especialidad y la hora. Si los datos son válidos, la cita se guarda en memoria y el programa muestra una confirmación.
+
+El programa registra una cita por ejecución. La información se conserva mientras el programa está abierto.
+
+## Patrones de diseño
+
+| Patrón | Categoría | Cómo lo usé |
+| --- | --- | --- |
+| Builder | Creacional | En `Cita.java`, `Cita.Builder` reúne los datos. Los métodos `especialidad()` y `hora()` completan la información y `construir()` la valida antes de crear la cita. |
+| Facade | Estructural | En `Reservas.java`, el método `reservar()` construye la cita y la envía a la agenda. Desde `Main` puedo completar la reserva con una sola llamada. |
+| Observer | De comportamiento | En `Agenda.java`, después de guardar la cita se llama a `citaRegistrada()`. El observador que configuré en `Main` muestra el mensaje de confirmación. |
+
+## Estructura del proyecto
+
+| Archivo | Responsabilidad |
+| --- | --- |
+| `src/Main.java` | Lee los datos y muestra el resultado en consola. |
+| `src/Cita.java` | Representa la cita y contiene el Builder. |
+| `src/Reservas.java` | Coordina la reserva. |
+| `src/Agenda.java` | Guarda la cita y avisa a los observadores. |
+| `src/Observador.java` | Define el método `citaRegistrada()`. |
+
+## Cómo ejecutar
+
+Necesitas **JDK 11 o superior**. Abre la terminal en la carpeta que contiene `src/` y ejecuta:
 
 ```bash
 javac -encoding UTF-8 -d out -sourcepath src src/Main.java
 java -cp out Main
 ```
 
-Ingresa `Luciana`, `Odontología` y `09:30`. La consola muestra «Ana, tu cita de Odontología quedó reservada para las 09:30».
+## Ejemplo de ejecución
 
-## Patrones
-
-- **Builder** reúne los datos y construye la cita.
-- **Facade** coordina la creación de la cita y su registro en la agenda.
-- **Observer** muestra el aviso cuando la agenda termina de guardar la cita.
-
-## Estructura del proyecto
-
-- `src/Main.java` lee los datos e imprime la confirmación.
-- `src/Cita.java` contiene la cita y su Builder.
-- `src/Reservas.java` contiene la fachada.
-- `src/Agenda.java` guarda las citas y avisa a los observadores.
-- `src/Observador.java` define el método de aviso.
+```text
+Paciente: Luciana
+Especialidad: Odontología
+Hora (HH:mm): 09:30
+Luciana, tu cita de Odontología quedó reservada para las 09:30.
+```
